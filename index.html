@@ -5,5 +5,30 @@
 </head>
 <body>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/VRControls.js"></script>
+    <script src="js/VREffect.js"></script>
+    <script src="js/webvr-polyfill.js"></script>
+    <script src="js/webvr-manager.js"></script>
+    <script type="text/javascript">
+        //var socketio = io();
+        (function() {
+            var renderer = new THREE.WebGLRenderer({antialias: false});
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Add Canvas into DOM tree.
+            document.body.appendChild(renderer.domElement);
+
+            var scene = new THREE.Scene();
+
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+
+            //var controls = new THREE.VRControls(camera);
+
+            var effect = new THREE.VREffect(renderer);
+            effect.setSize(window.innderWidth, window.innderHeight);
+
+            var manager = new WebVRManager(renderer, effect);
+        })();
 </body>
 </html>

@@ -11,6 +11,8 @@
         "npm": "3.10.x"
     },
     "dependencies": {
-        "socket.io": "1.7.x"
+        "socket.io": "1.7.x",
+        "webvr-boilerplate": "0.4.9",
+        "three": "0.82.x"
     }
 }
