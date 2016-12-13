@@ -1,6 +1,33 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			/*body {
+				background:#000;
+				padding:0;
+				margin:0;
+				font-weight: bold;
+				overflow:hidden;
+			}
+			#info {
+				position: absolute;
+				top: 10px; width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
+				z-index:100;
+			}
+			a {
+				color: orange;
+				text-decoration: none;
+			}
+			a:hover {
+				color: #0080ff;
+			}*/
+		</style>
     <title>Sphere Blast</title>
 </head>
 <body>
@@ -12,8 +39,8 @@
     <script src="js/webvr-manager.js"></script>
     <script type="text/javascript">
         //var socketio = io();
-        (function() {
-            var renderer = new THREE.WebGLRenderer({antialias: false});
+       // (function() {
+           /* var renderer = new THREE.WebGLRenderer({antialias: false});
             renderer.setPixelRatio(window.devicePixelRatio);
 
             // Add Canvas into DOM tree.
@@ -22,13 +49,74 @@
             var scene = new THREE.Scene();
 
             var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+            //camera.set(0, 0, 5);
 
-            //var controls = new THREE.VRControls(camera);
+            var controls = new THREE.VRControls(camera);
 
             var effect = new THREE.VREffect(renderer);
             effect.setSize(window.innderWidth, window.innderHeight);
 
             var manager = new WebVRManager(renderer, effect);
-        })();
+
+            var cube = new THREE.BoxGeometry(0.3, 0.3, 0.3);
+            var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 50});
+
+            var mesh = new THREE.Mesh(cube, material);
+            mesh.position.set(0, 0, -1);
+            scene.add(mash);
+
+            var light = new THREE.DirectionalLight(0xffffff);
+            light.position.set(1, 1, 1);
+            scene.add(light);
+
+            var lastRender = 0;
+            function animate(timestamp) {
+                var delta = Math.min(timestamp - lastRender, 500);
+                lastRender = timestamp;
+                mesh.rotation.x += delta * 0.0001;
+                mesh.rotation.y += delta * 0.00005;
+
+                controls.update();
+                manager.render(scene. camera. timestamp);
+                requestAnimationFrame(animate);
+            }
+            animate(performance ? performance.now() : Date.now());*/
+        //})();
+        var scene, camera, renderer;
+var geometry, material, mesh;
+ 
+init();
+animate();
+ 
+function init() {
+ 
+    scene = new THREE.Scene();
+ 
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.z = 1000;
+ 
+    geometry = new THREE.BoxGeometry( 200, 200, 200 );
+    material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+ 
+    mesh = new THREE.Mesh( geometry, material );
+    scene.add( mesh );
+ 
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+ 
+    document.body.appendChild( renderer.domElement );
+ 
+}
+ 
+function animate() {
+ 
+    requestAnimationFrame( animate );
+ 
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.02;
+ 
+    renderer.render( scene, camera );
+ 
+}
 </body>
 </html>
