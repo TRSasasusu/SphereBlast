@@ -5,4 +5,4 @@ var requestHandlers = require("./requestHandlers");
 var handle = {}
 handle["/"] = requestHandlers.start;
 
-server.start(router.route, handle);
+var io = require("socket.io").listen(server.start(router.route, handle));
