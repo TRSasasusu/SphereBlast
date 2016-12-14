@@ -1,18 +1,18 @@
 {
-    "name": "sphere-blast-trsasasusu",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "start": "node index.js"
-    },
-
-    "engine": {
-        "node": "v6.9.x",
-        "npm": "3.10.x"
-    },
-    "dependencies": {
-        "socket.io": "1.7.x",
-        "webvr-boilerplate": "0.4.9",
-        "three": "0.82.x"
-    }
+  "name": "sphere-blast-trsasasusu",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engine": {
+    "node": "v6.9.x",
+    "npm": "3.10.x"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "1.7.x",
+    "three": "0.82.x",
+    "webvr-boilerplate": "0.4.9"
+  }
 }
