@@ -42,8 +42,8 @@
     
     <script type="text/javascript">
         var socketio = io();
-       // (function() {
-           /* var renderer = new THREE.WebGLRenderer({antialias: false});
+        (function() {
+            var renderer = new THREE.WebGLRenderer({antialias: false});
             renderer.setPixelRatio(window.devicePixelRatio);
 
             // Add Canvas into DOM tree.
@@ -83,9 +83,9 @@
                 manager.render(scene. camera. timestamp);
                 requestAnimationFrame(animate);
             }
-            animate(performance ? performance.now() : Date.now());*/
-        //})();
-        var scene, camera, renderer;
+            animate(performance ? performance.now() : Date.now());
+        })();
+        /*var scene, camera, renderer;
 var geometry, material, mesh;
  
 init();
@@ -120,7 +120,7 @@ function animate() {
  
     renderer.render( scene, camera );
  
-}
+}*/
     </script>
 </body>
 </html>
