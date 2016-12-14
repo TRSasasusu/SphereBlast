@@ -4,9 +4,9 @@ var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
 app.get('/', function(req, res) {
-    res.sendFile("index.html");
+    res.sendFile(__dirname + "/index.html");
 });
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 io.on("connection", function(socket) {
 
