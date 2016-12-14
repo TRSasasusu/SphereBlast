@@ -12,6 +12,6 @@ io.on("connection", function(socket) {
 
 });
 
-http.listen(8000, function() {
+http.listen(process.env.PORT || 8000, function() {
 
 });
