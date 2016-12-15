@@ -42,7 +42,7 @@
     
     <script type="text/javascript">
         var socketio = io();
-        (function() {
+        //(function() {
             var renderer = new THREE.WebGLRenderer({antialias: false});
             renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -57,7 +57,7 @@
             var controls = new THREE.VRControls(camera);
 
             var effect = new THREE.VREffect(renderer);
-            effect.setSize(window.innderWidth, window.innderHeight);
+            effect.setSize(window.innerWidth, window.innerHeight);
 
             var manager = new WebVRManager(renderer, effect);
 
@@ -66,7 +66,7 @@
 
             var mesh = new THREE.Mesh(cube, material);
             mesh.position.set(0, 0, -1);
-            scene.add(mash);
+            scene.add(mesh);
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(1, 1, 1);
@@ -80,37 +80,42 @@
                 mesh.rotation.y += delta * 0.00005;
 
                 controls.update();
-                manager.render(scene. camera. timestamp);
+                manager.render(scene, camera, timestamp);
                 requestAnimationFrame(animate);
             }
             animate(performance ? performance.now() : Date.now());
-        })();
-        /*var scene, camera, renderer;
-var geometry, material, mesh;
+       // })();
+        /*var scene, camera, renderer, fakeCamera;
+var geometry, material, mesh, manager, effect, controls;
  
 init();
 animate();
  
 function init() {
- 
     scene = new THREE.Scene();
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
  
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.z = 1000;
- 
+
+    fakeCamera = new THREE.Object3D();
+    controls = new THREE.VRControls(fakeCamera);
+    effect = new THREE.VREffect(renderer);
+    effect.setSize(window.innerWidth, window.innerHeight);
+    manager = new WebVRManager(renderer, effect);
+
     geometry = new THREE.BoxGeometry( 200, 200, 200 );
     material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
  
     mesh = new THREE.Mesh( geometry, material );
     scene.add( mesh );
  
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
- 
     document.body.appendChild( renderer.domElement );
  
 }
- 
+
 function animate() {
  
     requestAnimationFrame( animate );
@@ -118,8 +123,11 @@ function animate() {
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.02;
  
-    renderer.render( scene, camera );
- 
+    camera.rotation = fakeCamera.rotation.clone();
+    //renderer.render( scene, camera );
+    controls.update();
+    
+    manager.render(scene, camera, timestamp);
 }*/
     </script>
 </body>
