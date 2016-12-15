@@ -65,8 +65,23 @@
             var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 50});
 
             var mesh = new THREE.Mesh(cube, material);
-            mesh.position.set(0, 0, -1);
+            mesh.position.set(0, 0, -3);
             scene.add(mesh);
+
+            var sphere = new THREE.Object3D();
+            var sphereLoader = new THREE.TextureLoader();
+            sphereLoader.load('img/test.png', function(texture) {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+
+                var geometry = new THREE.SphereGeometry(0.6, 32, 32);
+                var material = new THREE.MeshLambertMaterial({map: texture, color: 0xffffff, side: THREE.BackSide});
+                material.transparent = true;
+
+                sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.z = -1;
+                scene.add(sphere);
+            });
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(1, 1, 1);
@@ -76,8 +91,8 @@
             function animate(timestamp) {
                 var delta = Math.min(timestamp - lastRender, 500);
                 lastRender = timestamp;
-                mesh.rotation.x += delta * 0.0001;
-                mesh.rotation.y += delta * 0.00005;
+                sphere.rotation.x += delta * 0.0001;
+                sphere.rotation.y += delta * 0.00005;
 
                 controls.update();
                 manager.render(scene, camera, timestamp);
