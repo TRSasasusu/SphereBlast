@@ -37,12 +37,15 @@
     <script src="js/VREffect.js"></script>
     <script src="js/webvr-polyfill.js"></script>
     <script src="js/webvr-manager.js"></script>
+    <script src="js/MTLLoader.js"></script>
+    <script src="js/OBJLoader.js"></script>
 </head>
 <body>
     
     <script type="text/javascript">
         var socketio = io();
-        //(function() {
+        (function() {
+            "use strict";
             var renderer = new THREE.WebGLRenderer({antialias: false});
             renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -68,9 +71,9 @@
             mesh.position.set(0, 0, -3);
             scene.add(mesh);
 
-            var sphere = new THREE.Object3D();
+            /*var sphere = new THREE.Object3D();
             var sphereLoader = new THREE.TextureLoader();
-            sphereLoader.load('img/test.png', function(texture) {
+            sphereLoader.load('img/sphere.png', function(texture) {
                 texture.wrapS = THREE.RepeatWrapping;
                 texture.wrapT = THREE.RepeatWrapping;
 
@@ -81,25 +84,80 @@
                 sphere = new THREE.Mesh(geometry, material);
                 //sphere.position.z = -1;
                 scene.add(sphere);
-            });
+            });*/
+            var spheremodel, sphere, isSphereLoaded = false;
+            loadSphere();
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(1, 1, 1);
             scene.add(light);
 
             var lastRender = 0;
+
+            function loadSphere() {
+                var onProgress = function(xhr) {
+                    if(xhr.lengthComputable) {
+                        var percentComplete = xhr.loaded / xhr.total * 100;
+                        console.log(Math.round(percentComplete, 2) + '% downloaded');
+                    }
+                };
+                var onError = function(xhr) {};
+                var mtlLoader = new THREE.MTLLoader();
+                mtlLoader.load("models/sphere.mtl", function(materials) {
+                    materials.side = THREE.BackSide;
+                    materials.transparent = true;
+                    materials.opacity = 0.5;
+                    materials.preload();
+                    var objLoader = new THREE.OBJLoader();
+                    objLoader.setMaterials(materials);
+                    objLoader.load("models/sphere.obj", function(object) {
+                        sphere = object;
+                        sphere.position.set(0, 0, 0);
+                        scene.add(sphere);
+                        isSphereLoaded = true;
+                    }, onProgress, onError);
+                });
+               /*var ObjLoader = new THREE.OBJMTLLoader();
+                ObjLoader.load("models/sphere.obj", "models/sphere.mtl", function(object) {
+                    spheremodel = object.clone();
+                    spheremodel.scale.set(10, 10, 10);
+                    spheremodel.rotation.set(0, 0, 0);
+                    spheremodel.position.set(0, 0, 0);
+
+                    sphere = new THREE.Object3D();
+                    sphere.add(spheremodel);
+
+                    scene.add(sphere);
+                }, onProgress, onError);*/
+                //var loadManager = new THREE.LoadingManager();
+                /*var loader = new THREE.ColladaLoader();
+                loader.load('models/sphere.dae', function(collada) {
+                    sphere = collada.scene;
+                    sphere.scale.set(10.0, 10.0, 10.0);
+                    sphere.updateMatrix();
+                    //sphere.traverse();
+                    scene.add(sphere);
+                });
+                var a = 0;*/
+
+            }
+
             function animate(timestamp) {
                 var delta = Math.min(timestamp - lastRender, 500);
                 lastRender = timestamp;
-                sphere.rotation.x += delta * 0.0001;
-                sphere.rotation.y += delta * 0.00005;
+
+                if(isSphereLoaded) {
+                    sphere.rotation.x += delta * 0.0001;
+                    sphere.rotation.y += delta * 0.00005;
+                }
+                
 
                 controls.update();
                 manager.render(scene, camera, timestamp);
                 requestAnimationFrame(animate);
             }
             animate(performance ? performance.now() : Date.now());
-       // })();
+       })();
         /*var scene, camera, renderer, fakeCamera;
 var geometry, material, mesh, manager, effect, controls;
  
