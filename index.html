@@ -39,11 +39,15 @@
     <script src="js/webvr-manager.js"></script>
     <script src="js/MTLLoader.js"></script>
     <script src="js/OBJLoader.js"></script>
+    <script src="js/loadmodel.js"></script>
+    <script src="js/sphere.js"></script>
 </head>
 <body>
     
     <script type="text/javascript">
         var socketio = io();
+        var deltatime = 0;
+        var scene;
         (function() {
             "use strict";
             var renderer = new THREE.WebGLRenderer({antialias: false});
@@ -52,7 +56,7 @@
             // Add Canvas into DOM tree.
             document.body.appendChild(renderer.domElement);
 
-            var scene = new THREE.Scene();
+            scene = new THREE.Scene();
 
             var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
             //camera.set(0, 0, 5);
@@ -85,8 +89,9 @@
                 //sphere.position.z = -1;
                 scene.add(sphere);
             });*/
-            var spheremodel, sphere, isSphereLoaded = false;
-            loadSphere();
+            var sphere = new MySphere(loadmodel("sphere"));
+            //loadSphere();
+            //sphere = new 
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(1, 1, 1);
@@ -94,7 +99,7 @@
 
             var lastRender = 0;
 
-            function loadSphere() {
+            /*function loadSphere() {
                 var onProgress = function(xhr) {
                     if(xhr.lengthComputable) {
                         var percentComplete = xhr.loaded / xhr.total * 100;
@@ -117,40 +122,22 @@
                         isSphereLoaded = true;
                     }, onProgress, onError);
                 });
-               /*var ObjLoader = new THREE.OBJMTLLoader();
-                ObjLoader.load("models/sphere.obj", "models/sphere.mtl", function(object) {
-                    spheremodel = object.clone();
-                    spheremodel.scale.set(10, 10, 10);
-                    spheremodel.rotation.set(0, 0, 0);
-                    spheremodel.position.set(0, 0, 0);
+            }*/
 
-                    sphere = new THREE.Object3D();
-                    sphere.add(spheremodel);
-
-                    scene.add(sphere);
-                }, onProgress, onError);*/
-                //var loadManager = new THREE.LoadingManager();
-                /*var loader = new THREE.ColladaLoader();
-                loader.load('models/sphere.dae', function(collada) {
-                    sphere = collada.scene;
-                    sphere.scale.set(10.0, 10.0, 10.0);
-                    sphere.updateMatrix();
-                    //sphere.traverse();
-                    scene.add(sphere);
-                });
-                var a = 0;*/
-
-            }
+            var audio = new Audio();
+            audio.src = "sounds/music/FutureWorld_Dark_Loop_02.ogg";
+            audio.loop = true;
+            audio.play();
 
             function animate(timestamp) {
-                var delta = Math.min(timestamp - lastRender, 500);
+                deltatime = Math.min(timestamp - lastRender, 500);
                 lastRender = timestamp;
 
-                if(isSphereLoaded) {
-                    sphere.rotation.x += delta * 0.0001;
-                    sphere.rotation.y += delta * 0.00005;
-                }
-                
+                /*if(isSphereLoaded) {
+                    sphere.rotation.x += deltatime * 0.0001;
+                    sphere.rotation.y += deltatime * 0.00005;
+                }*/
+                sphere.move();
 
                 controls.update();
                 manager.render(scene, camera, timestamp);
