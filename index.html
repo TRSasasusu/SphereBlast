@@ -41,6 +41,7 @@
     <script src="js/OBJLoader.js"></script>
     <script src="js/loadmodel.js"></script>
     <script src="js/sphere.js"></script>
+    <script src="js/wall.js"></script>
 </head>
 <body>
     
@@ -68,13 +69,14 @@
 
             var manager = new WebVRManager(renderer, effect);
 
-            var cube = new THREE.BoxGeometry(0.3, 0.3, 0.3);
+            /*var cube = new THREE.BoxGeometry(0.3, 0.3, 0.3);
             var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 50});
 
             var mesh = new THREE.Mesh(cube, material);
             mesh.position.set(0, 0, -3);
-            scene.add(mesh);
+            scene.add(mesh);*/
 
+            
             /*var sphere = new THREE.Object3D();
             var sphereLoader = new THREE.TextureLoader();
             sphereLoader.load('img/sphere.png', function(texture) {
@@ -92,6 +94,7 @@
             var sphere = new MySphere(loadmodel("sphere"));
             //loadSphere();
             //sphere = new 
+            var wall = new Wall(new THREE.Vector3(0, 0, -3), new THREE.Vector3(0.3, 0.3, 0.3));
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(1, 1, 1);
