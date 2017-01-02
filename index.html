@@ -42,6 +42,7 @@
     <script src="js/loadmodel.js"></script>
     <script src="js/sphere.js"></script>
     <script src="js/wall.js"></script>
+    <script src="js/area.js"></script>
 </head>
 <body>
     
@@ -94,11 +95,15 @@
             var sphere = new MySphere(loadmodel("sphere"));
             //loadSphere();
             //sphere = new 
-            var wall = new Wall(new THREE.Vector3(0, 0, -3), new THREE.Vector3(0.3, 0.3, 0.3));
+            //var wall = new Wall(new THREE.Vector3(0, 0, -3), new THREE.Vector3(0.3, 0.3, 0.3));
+            var area = new Area();
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(1, 1, 1);
             scene.add(light);
+
+            var light2 = new THREE.AmbientLight(0x333333);
+            scene.add(light2);
 
             var lastRender = 0;
 
@@ -128,7 +133,12 @@
             }*/
 
             var audio = new Audio();
-            audio.src = "sounds/music/FutureWorld_Dark_Loop_02.ogg";
+            if(audio.canPlayType("audio/ogg") == 'maybe') {
+                audio.src = "sounds/music/FutureWorld_Dark_Loop_02.ogg";
+            }
+            else {
+                audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
+            }
             audio.loop = true;
             audio.play();
 
