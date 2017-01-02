@@ -132,7 +132,7 @@
                 });
             }*/
 
-            document.body.addEventListener('touchstart', function(){
+            document.addEventListener('touchstart', function(){
                 var audio = new Audio();
                 if(audio.canPlayType("audio/mp3") == 'maybe') {
                     audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
