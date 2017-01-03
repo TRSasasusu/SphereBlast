@@ -11,8 +11,8 @@ var MySphere = function(modelResult) {
         if(this.isFirstLoaded) {
             this.isFirstLoaded = false;
             //this.modelResult.object.add(camera);
-            this.modelResult.object.position.x = Math.random() * 60 - 80;
-            this.modelResult.object.position.z = Math.random() * 60 + 20;
+            this.modelResult.object.position.x = Math.random() * 600 - 800;
+            this.modelResult.object.position.z = Math.random() * 600 + 200;
             scene.add(this.cameraDummy);
             this.cameraDummy.add(camera);
         }
@@ -22,11 +22,6 @@ var MySphere = function(modelResult) {
             console.log(this.velocity);
         }
 
-        /*var ray = new THREE.Raycaster(camera.position, forward(camera).normalize().multiplyScalar(-1));
-        var objs = ray.intersectObjects(scene.children);
-        if(objs.length > 0) {
-            objs[0].object.rotation.y += deltatime * 10;
-        }*/
         var cameraDirection = forward(camera);
         var sphereForward = forward(this.modelResult.object);
         var sphereRight = right(this.modelResult.object);
@@ -50,6 +45,15 @@ var MySphere = function(modelResult) {
             this.velocity.sub(sphereUp.multiplyScalar(deltatime * 0.0001));
         }
         this.velocity.clampLength(0, 0.01);
+
+        var tmpVelocity = (new THREE.Vector3()).set(this.velocity.x, this.velocity.y, this.velocity.z);
+        var ray = new THREE.Raycaster(this.modelResult.object.position, tmpVelocity.normalize());
+        var objs = ray.intersectObjects(scene.children);
+        for(var i = 0; i < objs.length; ++i) {
+            if(objs[i].distance < 1) {
+                this.velocity.multiplyScalar(-0.5);
+            }
+        }
 
         /*var sphereDirection = forward(this.modelResult.object);
         var dot = cameraDirection.dot(sphereDirection);

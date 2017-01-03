@@ -4,9 +4,9 @@ var Area = function() {
 
 function makeLowerLeftArea() {
     var walls = [];
-    walls.push(new Wall(new THREE.Vector3(-100, 0, 50), new THREE.Vector3(2, 100, 100)));
-    walls.push(new Wall(new THREE.Vector3(-50, 0, 100), new THREE.Vector3(100, 100, 2)));
-    walls.push(new Wall(new THREE.Vector3(-50, 0, 10), new THREE.Vector3(100, 100, 2)));
-    walls.push(new Wall(new THREE.Vector3(-10, 0, 50), new THREE.Vector3(2, 100, 100)));
+    walls.push(new Wall(new THREE.Vector3(-1000, 0, 500), new THREE.Vector3(2, 1000, 1000)));
+    walls.push(new Wall(new THREE.Vector3(-500, 0, 1000), new THREE.Vector3(1000, 1000, 2)));
+    walls.push(new Wall(new THREE.Vector3(-500, 0, 100), new THREE.Vector3(1000, 1000, 2)));
+    walls.push(new Wall(new THREE.Vector3(-100, 0, 500), new THREE.Vector3(2, 1000, 1000)));
     return walls;
 }
