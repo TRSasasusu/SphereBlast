@@ -27,24 +27,24 @@ var MySphere = function(modelResult) {
         var sphereRight = right(this.modelResult.object);
         var sphereUp = up(this.modelResult.object);
         if(cameraDirection.dot(sphereForward) > 0.9) {
-            this.velocity.add(sphereForward.multiplyScalar(deltatime * 0.0001));
+            this.velocity.add(sphereForward.multiplyScalar(deltatime * 0.001));
         }
         else if(cameraDirection.dot(sphereForward) < -0.9) {
-            this.velocity.sub(sphereForward.multiplyScalar(deltatime * 0.0001));
+            this.velocity.sub(sphereForward.multiplyScalar(deltatime * 0.001));
         }
         else if(cameraDirection.dot(sphereRight) > 0.9) {
-            this.velocity.add(sphereRight.multiplyScalar(deltatime * 0.0001));
+            this.velocity.add(sphereRight.multiplyScalar(deltatime * 0.001));
         }
         else if(cameraDirection.dot(sphereRight) < -0.9) {
-            this.velocity.sub(sphereRight.multiplyScalar(deltatime * 0.0001));
+            this.velocity.sub(sphereRight.multiplyScalar(deltatime * 0.001));
         }
         else if(cameraDirection.dot(sphereUp) > 0.9) {
-            this.velocity.add(sphereUp.multiplyScalar(deltatime * 0.0001));
+            this.velocity.add(sphereUp.multiplyScalar(deltatime * 0.001));
         }
         else if(cameraDirection.dot(sphereUp) < -0.9) {
-            this.velocity.sub(sphereUp.multiplyScalar(deltatime * 0.0001));
+            this.velocity.sub(sphereUp.multiplyScalar(deltatime * 0.001));
         }
-        this.velocity.clampLength(0, 0.01);
+        this.velocity.clampLength(0, 0.03);
 
         var tmpVelocity = (new THREE.Vector3()).set(this.velocity.x, this.velocity.y, this.velocity.z);
         var ray = new THREE.Raycaster(this.modelResult.object.position, tmpVelocity.normalize());
