@@ -131,17 +131,26 @@
                     }, onProgress, onError);
                 });
             }*/
-
-            document.addEventListener('touchstart', function(){
-                var audio = new Audio();
-                if(audio.canPlayType("audio/mp3") == 'maybe') {
-                    audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
+            var audio = new Audio();
+            if(audio.canPlayType("audio/mp3") == 'maybe') {
+                audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
+            }
+            else {
+                audio.src = "sounds/music/FutureWorld_Dark_Loop_02.ogg";
+            }
+            audio.loop = true;
+            var isAudioStarted = false;
+            document.addEventListener('touchstart', function() {
+                if(!isAudioStarted) {
+                    isAudioStarted = true;
+                    audio.play();
                 }
-                else {
-                    audio.src = "sounds/music/FutureWorld_Dark_Loop_02.ogg";
+            });
+            audio.addEventListener("canplay", function() {
+                if(!isAudioStarted) {
+                    isAudioStarted = true;
+                    audio.play();
                 }
-                audio.loop = true;
-                audio.play();
             });
 
             function animate(timestamp) {
