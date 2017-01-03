@@ -18,14 +18,14 @@ io.on("connection", function(socket) {
     });*/
 
     socket.on("publish", function(position) {
-        console.log("published by " + socket.id);
-        console.log("position: " + position.x + "," + position.y + "," + position.z);
-        io.broadcast("publish", socket.id, position);
+        //console.log("published by " + socket.id);
+        //console.log("position: " + position.x + "," + position.y + "," + position.z);
+        socket.broadcast.emit("publish", socket.id, position);
     });
 
     socket.on("disconnect", function() {
-        console.log("disconnect by " + socket.id);
-        io.broadcast("disconnect", socket.id);
+        //console.log("disconnect by " + socket.id);
+        socket.broadcast.emit("disconnect", socket.id);
     });
 });
 
