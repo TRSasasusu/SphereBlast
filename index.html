@@ -50,6 +50,7 @@
         var socketio = io();
         var deltatime = 0;
         var scene;
+        var camera;
         (function() {
             "use strict";
             var renderer = new THREE.WebGLRenderer({antialias: false});
@@ -60,7 +61,7 @@
 
             scene = new THREE.Scene();
 
-            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
             //camera.set(0, 0, 5);
 
             var controls = new THREE.VRControls(camera);
