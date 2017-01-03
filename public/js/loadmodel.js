@@ -14,8 +14,15 @@ function loadmodel(filenameWithoutExtension) {
         materials.opacity = 0.5;
         materials.preload();
         var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
+        //objLoader.setMaterials(materials);
+        texture = new THREE.TextureLoader().load('models/' + filenameWithoutExtension + '_colored.png');
+        basic = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, side: THREE.BackSide, map: texture});
         objLoader.load("models/" + filenameWithoutExtension + ".obj", function(object) {
+            object.traverse(function(child) {
+                if(child instanceof THREE.Mesh) {
+                    child.material = basic;
+                }
+            });
             result.object = object;
             object.position.set(0, 0, 0);
             scene.add(object);
