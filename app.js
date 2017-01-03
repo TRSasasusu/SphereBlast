@@ -20,12 +20,12 @@ io.on("connection", function(socket) {
     socket.on("publish", function(position) {
         console.log("published by " + socket.id);
         console.log("position: " + position.x + "," + position.y + "," + position.z);
-        io.emit("publish", socket.id, position);
+        io.broadcast("publish", socket.id, position);
     });
 
     socket.on("disconnect", function() {
         console.log("disconnect by " + socket.id);
-        io.emit("disconnect", socket.id);
+        io.broadcast("disconnect", socket.id);
     });
 });
 

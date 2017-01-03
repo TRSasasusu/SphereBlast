@@ -57,7 +57,7 @@
             if(!area.users[id].modelResult.isLoaded) {
                 return;
             }
-            area.users[id].modelResult.object.position = position;
+            area.users[id].modelResult.object.position.set(position.x, position.y, position.z);
         });
         socketio.on("disconnect", function(id) {
             scene.remove(area.users[id].modelResult.object);
