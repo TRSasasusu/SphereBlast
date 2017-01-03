@@ -12,16 +12,19 @@ app.use(express.static(__dirname + '/public'));
 //var userHash = {};
 
 io.on("connection", function(socket) {
-    socket.on("connected", function(position, rotation) {
+    /*socket.on("connected", function(position) {
         //userHash[socket.id] = 
-        io.emit("publish", socket.id, position, rotation);
-    });
+        io.emit("publish", socket.id, position);
+    });*/
 
-    socket.on("publish", function(position, rotation) {
-        io.emit("publish", socket.id, position, rotation);
+    socket.on("publish", function(position) {
+        console.log("published by " + socket.id);
+        console.log("position: " + position.x + "," + position.y + "," + position.z);
+        io.emit("publish", socket.id, position);
     });
 
     socket.on("disconnect", function() {
+        console.log("disconnect by " + socket.id);
         io.emit("disconnect", socket.id);
     });
 });

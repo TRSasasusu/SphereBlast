@@ -1,5 +1,6 @@
 var Area = function() {
     this.lowerLeftWalls = makeLowerLeftArea();
+    this.users = {};
 };
 
 function makeLowerLeftArea() {

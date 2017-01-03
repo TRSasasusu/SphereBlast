@@ -43,15 +43,32 @@
     <script src="js/sphere.js"></script>
     <script src="js/wall.js"></script>
     <script src="js/area.js"></script>
+    <script src="js/localSocket.js"></script>
 </head>
 <body>
     
     <script type="text/javascript">
         var socketio = io();
+        socketio.on("publish", function(id, position) {
+            if(!(id in area.users)) {
+                area.users[id] = new OtherSphere(loadmodel("sphere2", "sphere_other"));
+            }
+
+            if(!area.users[id].modelResult.isLoaded) {
+                return;
+            }
+            area.users[id].modelResult.object.position = position;
+        });
+        socketio.on("disconnect", function(id) {
+            scene.remove(area.users[id].modelResult.object);
+
+            delete area.users[id];
+        });
         var deltatime = 0;
         var scene;
         var camera;
         var materialCaches = {};
+        var area;
         (function() {
             "use strict";
             var renderer = new THREE.WebGLRenderer({antialias: false});
@@ -95,11 +112,11 @@
                 //sphere.position.z = -1;
                 scene.add(sphere);
             });*/
-            var sphere = new MySphere(loadmodel("sphere2"));
+            var sphere = new MySphere(loadmodel("sphere2", "sphere2"));
             //loadSphere();
             //sphere = new 
             //var wall = new Wall(new THREE.Vector3(0, 0, -3), new THREE.Vector3(0.3, 0.3, 0.3));
-            var area = new Area();
+            area = new Area();
 
             var light = new THREE.DirectionalLight(0xffffff);
             light.position.set(-400, 400, 400);

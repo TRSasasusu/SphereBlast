@@ -15,6 +15,7 @@ var MySphere = function(modelResult) {
             this.modelResult.object.position.z = Math.random() * 600 + 200;
             scene.add(this.cameraDummy);
             this.cameraDummy.add(camera);
+            //socketio.emit("connected", this.modelResult.object.position);
         }
         this.modelResult.object.position.add(this.velocity.multiplyScalar(deltatime));
         this.cameraDummy.position.set(this.modelResult.object.position.x, this.modelResult.object.position.y, this.modelResult.object.position.z);
@@ -26,6 +27,7 @@ var MySphere = function(modelResult) {
         var sphereForward = forward(this.modelResult.object);
         var sphereRight = right(this.modelResult.object);
         var sphereUp = up(this.modelResult.object);
+        materialCaches['sphere2'].opacity = 1;
         if(cameraDirection.dot(sphereForward) > 0.9) {
             this.velocity.add(sphereForward.multiplyScalar(deltatime * 0.001));
         }
@@ -43,6 +45,10 @@ var MySphere = function(modelResult) {
         }
         else if(cameraDirection.dot(sphereUp) < -0.9) {
             this.velocity.sub(sphereUp.multiplyScalar(deltatime * 0.001));
+        }
+        else {
+            //this.modelResult.object.material.opacity = 0.5;
+            materialCaches['sphere2'].opacity = 0.3;
         }
         this.velocity.clampLength(0, 0.03);
 
@@ -83,6 +89,8 @@ var MySphere = function(modelResult) {
         if(this.velocity.z < -500) {
             console.log(this.velocity);
         }
+
+        socketio.emit("publish", this.modelResult.object.position);
     };
 };
 
@@ -108,4 +116,14 @@ function up(object) {
     var direction = new THREE.Vector3(0, 1, 0);
     //return matrix.multiplyVector3(direction).normalize().multiplyScalar(-1);
     return direction.applyMatrix4(matrix).normalize().multiplyScalar(-1);
+}
+
+var OtherSphere = function(modelResult) {
+    this.modelResult = modelResult;
+    this.beMoved = function(position) {
+        if(!this.modelResult.isLoaded) {
+            return;
+        }
+        this.modelResult.object.position = position;
+    }
 }
