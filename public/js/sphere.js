@@ -201,6 +201,7 @@ var AnotherCanvas = function() {
     this.ctx.fillStyle = '#22ff22';
     this.text = "";
 
+    this.texture = new THREE.Texture();
     this.material = new THREE.SpriteMaterial({color: 0xffffff/*, transparent: true, opacity: 0.5*/});
     this.draw = function(text, spherePosition) {
         /*if(this.text == text) {
@@ -239,10 +240,12 @@ var AnotherCanvas = function() {
         this.ctx.font = "20px 'Roboto Slab'";
         this.ctx.fillText(text, 0, 20, 256);
 
-        if(this.material.map != null) {
-            this.material.map.dispose();
+        this.texture.image = this.textureCanvas;
+        if(this.material.map == null) {
+            //this.material.map.dispose();
+            this.material.map = this.texture;
         }
-        this.material.map = new THREE.Texture(this.textureCanvas);
+        //this.material.map = new THREE.Texture(this.textureCanvas);
         this.material.map.needsUpdate = true;
         return this.material;
     }
