@@ -239,7 +239,9 @@ var AnotherCanvas = function() {
         this.ctx.font = "20px 'Roboto Slab'";
         this.ctx.fillText(text, 0, 20, 256);
 
-        this.material.map.dispose();
+        if(this.material.map != null) {
+            this.material.map.dispose();
+        }
         this.material.map = new THREE.Texture(this.textureCanvas);
         this.material.map.needsUpdate = true;
         return this.material;
