@@ -238,7 +238,7 @@ var AnotherCanvas = function() {
                 this.ctx.beginPath();
                 this.ctx.arc(
                     (area.users[key].modelResult.object.position.x - spherePosition.x) / 20 * 80 + 128,
-                    (area.users[key].modelResult.object.position.y - spherePosition.y) / 20 * 80 + 128,
+                    (area.users[key].modelResult.object.position.z - spherePosition.z) / 20 * 80 + 128,
                     5, 0, Math.PI * 2, false
                 );
                 this.ctx.fill();
