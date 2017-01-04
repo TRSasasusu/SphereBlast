@@ -4,6 +4,8 @@ var MySphere = function(modelResult) {
     //this.tmpwall = new Wall(new THREE.Vector3(0, 0, -1), new THREE.Vector3(0.1, 0.1, 0.1));
     this.isFirstLoaded = true;
     this.cameraDummy = new THREE.Object3D();
+    this.textGeometry;
+    this.isTextLoaded = false;
     this.move = function() {
         if(!this.modelResult.isLoaded) {
             return;
@@ -16,6 +18,35 @@ var MySphere = function(modelResult) {
             scene.add(this.cameraDummy);
             this.cameraDummy.add(camera);
             //socketio.emit("connected", this.modelResult.object.position);
+            var loader = new THREE.FontLoader();
+            loader.load("fonts/helvetiker_bold.typeface.json", function(font){
+                this.textGeometry = new THREE.TextGeometry("This is a 3D text", {
+
+                    font: font,
+
+                    size: 50,
+                    height: 10,
+                    curveSegments: 12,
+
+                    bevelThickness: 1,
+                    bevelSize: 1,
+                    bevelEnabled: true
+
+                });
+
+                var textMat = new THREE.MeshLambertMaterial({color: 0xFF00FF});
+
+                var textMesh = new THREE.Mesh(this.textGeometry, textMat);
+
+                scene.add(textMesh);
+                this.isTextLoaded = true;
+            });
+            /*var textGeometry = new THREE.TextGeometry("Players: ", {
+                //size: 10, height: 4, font: "helvetiker", weight: "bold", style: "normal"
+            });
+            var textMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+            var text = new THREE.Mesh(this.textGeometry, textMaterial);
+            scene.add(text);*/
         }
         var tmpVelocity2 = new THREE.Vector3(this.velocity.x, this.velocity.y, this.velocity.z);
         this.modelResult.object.position.add(tmpVelocity2.multiplyScalar(deltatime));
@@ -107,6 +138,10 @@ var MySphere = function(modelResult) {
 
         if(this.velocity.z < -500) {
             console.log(this.velocity);
+        }
+
+        if(this.isTextLoaded) {
+            this.textGeometry.text = "Players: " + area.users.length;
         }
 
         socketio.emit("publish", this.modelResult.object.position);
