@@ -4,8 +4,8 @@ var MySphere = function(modelResult) {
     //this.tmpwall = new Wall(new THREE.Vector3(0, 0, -1), new THREE.Vector3(0.1, 0.1, 0.1));
     this.isFirstLoaded = true;
     this.cameraDummy = new THREE.Object3D();
-    this.textGeometry;
-    this.isTextLoaded = false;
+    this.anotherCanvas = new AnotherCanvas();
+    this.ui = new THREE.Sprite();
     this.move = function() {
         if(!this.modelResult.isLoaded) {
             return;
@@ -18,7 +18,7 @@ var MySphere = function(modelResult) {
             scene.add(this.cameraDummy);
             this.cameraDummy.add(camera);
             //socketio.emit("connected", this.modelResult.object.position);
-            var loader = new THREE.FontLoader();
+            /*var loader = new THREE.FontLoader();
             loader.load("fonts/helvetiker_bold.typeface.json", function(font){
                 this.textGeometry = new THREE.TextGeometry("This is a 3D text", {
 
@@ -40,13 +40,21 @@ var MySphere = function(modelResult) {
 
                 scene.add(textMesh);
                 this.isTextLoaded = true;
-            });
+            });*/
             /*var textGeometry = new THREE.TextGeometry("Players: ", {
                 //size: 10, height: 4, font: "helvetiker", weight: "bold", style: "normal"
             });
             var textMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
             var text = new THREE.Mesh(this.textGeometry, textMaterial);
             scene.add(text);*/
+            scene.add(this.ui);
+            this.ui.scale.set(0.4, 0.4, 1);
+            this.ui.name = "ui";
+            camera.add(this.ui);
+            this.ui.position.z = -0.5;
+            //this.ui.position.y = 0.125;
+            //camera.add(this.ui);
+            //this.ui.position.z = -2;
         }
         var tmpVelocity2 = new THREE.Vector3(this.velocity.x, this.velocity.y, this.velocity.z);
         this.modelResult.object.position.add(tmpVelocity2.multiplyScalar(deltatime));
@@ -88,7 +96,7 @@ var MySphere = function(modelResult) {
         var ray = new THREE.Raycaster(this.modelResult.object.position, tmpVelocity.normalize());
         var objs = ray.intersectObjects(scene.children);
         for(var i = 0; i < objs.length; ++i) {
-            if(objs[i].distance < 1 && objs[i].object.name != "mysphere") {
+            if(objs[i].distance < 1 && objs[i].object.name != "mysphere" && objs[i].object.name != "ui") {
                 this.velocity.multiplyScalar(-0.1 + (objs[i].distance - 1));
                 /*var vx = this.modelResult.object.position.x - objs[i].point.x,
                     vy = this.modelResult.object.position.y - objs[i].point.y,
@@ -140,9 +148,10 @@ var MySphere = function(modelResult) {
             console.log(this.velocity);
         }
 
-        if(this.isTextLoaded) {
+        /*if(this.isTextLoaded) {
             this.textGeometry.text = "Players: " + area.users.length;
-        }
+        }*/
+        this.ui.material = this.anotherCanvas.draw("Players: " + (Object.keys(area.users).length + 1), this.modelResult.object.position);
 
         socketio.emit("publish", this.modelResult.object.position);
     };
@@ -179,5 +188,59 @@ var OtherSphere = function(modelResult) {
             return;
         }
         this.modelResult.object.position = position;
+    }
+}
+
+var AnotherCanvas = function() {
+    this.textureCanvas = document.createElement('canvas');
+    this.ctx = this.textureCanvas.getContext('2d');
+
+    this.textureCanvas.width = 256;
+    this.textureCanvas.height = 256;
+
+    this.ctx.fillStyle = '#22ff22';
+    this.text = "";
+
+    this.material = new THREE.SpriteMaterial({color: 0xffffff/*, transparent: true, opacity: 0.5*/});
+    this.draw = function(text, spherePosition) {
+        /*if(this.text == text) {
+            return this.material;
+        }*/
+
+        this.text = text;
+        this.ctx.clearRect(0, 0, 256, 256);
+
+        //this.ctx.fillStyle = '#2233ff';
+        //this.ctx.fillRect(0, 0, 256, 256);
+
+        this.ctx.strokeStyle = '#000055';
+        this.ctx.beginPath();
+        this.ctx.arc(128, 128, 80, 0, Math.PI * 2, false);
+        this.ctx.stroke();
+
+        this.ctx.fillStyle = '#0000bb';
+        this.ctx.beginPath();
+        this.ctx.arc(128, 128, 5, 0, Math.PI * 2, false);
+        this.ctx.fill();
+        for(var key in area.users) {
+            if(area.users[key].modelResult.object.position.distanceTo(spherePosition) < 20) {
+                this.ctx.fillStyle = 'yellow';
+                this.ctx.beginPath();
+                this.ctx.arc(
+                    area.users[key].modelResult.object.position.x - spherePosition.x / 20 * 80 + 128,
+                    area.users[key].modelResult.object.position.y - spherePosition.y / 20 * 80 + 128,
+                    5, 0, Math.PI * 2, false
+                );
+                this.ctx.fill();
+            }
+        }
+
+        this.ctx.fillStyle = '#22ff22';
+        this.ctx.font = "20px 'Roboto Slab'";
+        this.ctx.fillText(text, 0, 20, 256);
+
+        this.material.map = new THREE.Texture(this.textureCanvas);
+        this.material.map.needsUpdate = true;
+        return this.material;
     }
 }
