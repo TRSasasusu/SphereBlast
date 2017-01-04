@@ -57,7 +57,7 @@ var MySphere = function(modelResult) {
         var ray = new THREE.Raycaster(this.modelResult.object.position, tmpVelocity.normalize());
         var objs = ray.intersectObjects(scene.children);
         for(var i = 0; i < objs.length; ++i) {
-            if(objs[i].distance < 1 && objs[i].object.name != "球") {
+            if(objs[i].distance < 1 && objs[i].object.name != "mysphere") {
                 this.velocity.multiplyScalar(-0.1 + (objs[i].distance - 1));
                 /*var vx = this.modelResult.object.position.x - objs[i].point.x,
                     vy = this.modelResult.object.position.y - objs[i].point.y,
@@ -69,7 +69,7 @@ var MySphere = function(modelResult) {
         for(var i = 0; i < scene.children.length; ++i) {
             var objInChild = ray.intersectObjects(scene.children[i].children);
             for(var j = 0; j < objInChild.length; ++j) {
-                if(objInChild[j].distance < 1 && objInChild[j].object.name != "球") {
+                if(objInChild[j].distance < 1 && objInChild[j].object.name != "mysphere") {
                     this.velocity.multiplyScalar(-0.1 + (objInChild[j].distance - 1));
                     /*var vx = this.modelResult.object.position.x - objInChild[j].point.x,
                         vy = this.modelResult.object.position.y - objInChild[j].point.y,

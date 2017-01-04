@@ -58,6 +58,9 @@
                 return;
             }
             area.users[id].modelResult.object.position.set(position.x, position.y, position.z);
+            if(area.users[id].modelResult.object.children[0].name == "mysphere") {
+                area.users[id].modelResult.object.children[0].name = "othersphere";
+            }
         });
         socketio.on("disconnect", function(id) {
             scene.remove(area.users[id].modelResult.object);
