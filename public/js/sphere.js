@@ -227,8 +227,8 @@ var AnotherCanvas = function() {
                 this.ctx.fillStyle = 'yellow';
                 this.ctx.beginPath();
                 this.ctx.arc(
-                    area.users[key].modelResult.object.position.x - spherePosition.x / 20 * 80 + 128,
-                    area.users[key].modelResult.object.position.y - spherePosition.y / 20 * 80 + 128,
+                    (area.users[key].modelResult.object.position.x - spherePosition.x) / 20 * 80 + 128,
+                    (area.users[key].modelResult.object.position.y - spherePosition.y) / 20 * 80 + 128,
                     5, 0, Math.PI * 2, false
                 );
                 this.ctx.fill();
@@ -239,6 +239,7 @@ var AnotherCanvas = function() {
         this.ctx.font = "20px 'Roboto Slab'";
         this.ctx.fillText(text, 0, 20, 256);
 
+        this.material.map.dispose();
         this.material.map = new THREE.Texture(this.textureCanvas);
         this.material.map.needsUpdate = true;
         return this.material;
