@@ -223,7 +223,7 @@ var AnotherCanvas = function() {
         this.ctx.arc(128, 128, 5, 0, Math.PI * 2, false);
         this.ctx.fill();
         for(var key in area.users) {
-            if(area.users[key].modelResult.object.position.distanceTo(spherePosition) < 20) {
+            if(area.users[key].modelResult.isLoaded && area.users[key].modelResult.object.position.distanceTo(spherePosition) < 20) {
                 this.ctx.fillStyle = 'yellow';
                 this.ctx.beginPath();
                 this.ctx.arc(
