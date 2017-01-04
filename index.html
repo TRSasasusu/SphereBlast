@@ -125,10 +125,13 @@
             light.shadowMapHeight = 2048;*/
             scene.add(light);
 
-            var light2 = new THREE.AmbientLight(0x333333);
+            var light2 = new THREE.AmbientLight(0x9999ff);
             scene.add(light2);
 
             var lastRender = 0;
+
+            //var light3 = new THREE.PointLight(0xffffff);
+            //scene.add(light3);
 
             /*function loadSphere() {
                 var onProgress = function(xhr) {

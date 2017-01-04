@@ -1,6 +1,12 @@
 var Area = function() {
-    this.lowerLeftWalls = makeLowerLeftArea();
+    //this.lowerLeftWalls = makeLowerLeftArea();
+    this.lowerLeftWalls = loadmodel('lowerleft', 'lowerleft', true);
     this.users = {};
+    this.move = function() {
+        if(this.lowerLeftWalls.isLoaded) {
+            //this.lowerLeftWalls.object.position.set(-)
+        }
+    }
 };
 
 function makeLowerLeftArea() {

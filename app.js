@@ -25,7 +25,7 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", function() {
         //console.log("disconnect by " + socket.id);
-        socket.broadcast.emit("disconnect", socket.id);
+        io.emit("disconnect", socket.id);
     });
 });
 

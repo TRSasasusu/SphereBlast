@@ -1,4 +1,8 @@
-function loadmodel(obj, mtl) {
+function loadmodel(obj, mtl, isThereNormal) {
+    if(isThereNormal === undefined) {
+        isThereNormal = false;
+    }
+
     var onProgress = function(xhr) {
         if(xhr.lengthComputable) {
             var percentComplete = xhr.loaded / xhr.total * 100;
@@ -21,7 +25,13 @@ function loadmodel(obj, mtl) {
                 materialCaches[mtl] = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, side: THREE.BackSide, map: texture});
             }
             else {
-                materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture});
+                if(isThereNormal) {
+                    var normalTexture = new THREE.TextureLoader().load('models/' + mtl + '_normal.png');
+                    materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture, normalMap: normalTexture});
+                }
+                else {
+                    materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture});
+                }
             }
         }
         //basic = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, side: THREE.BackSide, map: texture});
