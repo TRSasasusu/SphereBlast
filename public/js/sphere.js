@@ -15,8 +15,17 @@ var MySphere = function(modelResult) {
             //this.modelResult.object.add(camera);
             //this.modelResult.object.position.x = Math.random() * 600 - 800;
             //this.modelResult.object.position.z = Math.random() * 600 + 200;
+            var randomX = [0, -8, 1.979, 2, 4];
+            var randomY = [0, 0, 4, 4, 0];
+            var randomZ = [0, 6, 4, 4, 8];
+            //var randomRY = [0, 0, 180, 0, 180];
+            var randomIndex = Math.floor(Math.random() * randomX.length);
+            this.modelResult.object.position.set(randomX[randomIndex], randomY[randomIndex], randomZ[randomIndex]);
+
             scene.add(this.cameraDummy);
             this.cameraDummy.add(camera);
+
+            //this.cameraDummy.rotation.y = randomRY[randomIndex];
             //socketio.emit("connected", this.modelResult.object.position);
             /*var loader = new THREE.FontLoader();
             loader.load("fonts/helvetiker_bold.typeface.json", function(font){

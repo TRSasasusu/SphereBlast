@@ -185,6 +185,7 @@
                 }
             });
 
+            var frame = 0;
             function animate(timestamp) {
                 deltatime = Math.min(timestamp - lastRender, 500);
                 lastRender = timestamp;
@@ -196,8 +197,15 @@
                 sphere.move();
 
                 controls.update();
-                manager.render(scene, camera, timestamp);
+                
                 requestAnimationFrame(animate);
+
+                ++frame;
+                if(frame % 2 == 0) {
+                    return;
+                }
+
+                manager.render(scene, camera, timestamp);
             }
             animate(performance ? performance.now() : Date.now());
        })();
