@@ -228,9 +228,25 @@ var AnotherCanvas = function() {
         this.ctx.arc(128, 128, 80, 0, Math.PI * 2, false);
         this.ctx.stroke();
 
+        var angle = camera.rotation.y;
+        if(forward(camera).z < 0) {
+            angle = Math.PI - angle;
+        }
+        this.ctx.translate(128, 128);
+        this.ctx.rotate(angle);
         this.ctx.fillStyle = '#0000bb';
         this.ctx.beginPath();
-        this.ctx.arc(128, 128, 5, 0, Math.PI * 2, false);
+        //this.ctx.arc(128, 128, 5, 0, Math.PI * 2, false);
+        this.ctx.moveTo(128-128, 122-128);
+        this.ctx.lineTo(131-128, 133-128);
+        this.ctx.lineTo(125-128, 133-128);
+        this.ctx.rotate(-angle);
+        this.ctx.translate(-128, -128);
+        //console.log("camera angle: (" + (camera.rotation.x / Math.PI / 180).toFixed(1) + "," + (angle / Math.PI * 180).toFixed(1) + "," + (camera.rotation.z / Math.PI / 180).toFixed(1) + ")");
+        /*this.ctx.moveTo(128 + Math.cos(angle + Math.PI / 2) * 8, 128 + Math.sin(angle + Math.PI / 2) * 8);
+        this.ctx.lineTo(128 + Math.cos(angle + Math.PI * 4 / 3) * 4, 128 + Math.cos(angle + Math.PI * 4 / 3) * 4);
+        this.ctx.lineTo(128 + Math.cos(angle + Math.PI * 5 / 3) * 4, 128 + Math.cos(angle + Math.PI * 5 / 3) * 4);*/
+        this.ctx.closePath();
         this.ctx.fill();
         for(var key in area.users) {
             if(area.users[key].modelResult.isLoaded && area.users[key].modelResult.object.position.distanceTo(spherePosition) < 20) {
