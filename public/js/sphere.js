@@ -228,7 +228,7 @@ var AnotherCanvas = function() {
         this.ctx.arc(128, 128, 80, 0, Math.PI * 2, false);
         this.ctx.stroke();
 
-        var angle = camera.rotation.y;
+        var angle = camera.rotation.y + Math.PI;
         if(forward(camera).z < 0) {
             angle = Math.PI - angle;
         }
@@ -249,15 +249,24 @@ var AnotherCanvas = function() {
         this.ctx.closePath();
         this.ctx.fill();
         for(var key in area.users) {
-            if(area.users[key].modelResult.isLoaded && area.users[key].modelResult.object.position.distanceTo(spherePosition) < 20) {
+            if(!area.users[key].modelResult.isLoaded) {
+                continue;
+            }
+            var tmpX = area.users[key].modelResult.object.position.x,
+                tmpY = area.users[key].modelResult.object.position.y,
+                tmpZ = area.users[key].modelResult.object.position.z;
+            //if(area.users[key].modelResult.object.position.distanceTo(spherePosition) < 20) {
+            if(Math.pow(tmpX - spherePosition.x, 2) + Math.pow(tmpZ - spherePosition.z, 2) < 400) {
                 this.ctx.fillStyle = 'yellow';
+                this.ctx.globalAlpha = 1 - clamp(Math.abs(tmpY - spherePosition.y) / 2.8, 0, 0.8);
                 this.ctx.beginPath();
                 this.ctx.arc(
-                    (area.users[key].modelResult.object.position.x - spherePosition.x) / 20 * 80 + 128,
-                    (area.users[key].modelResult.object.position.z - spherePosition.z) / 20 * 80 + 128,
+                    (tmpX - spherePosition.x) / 20 * 80 + 128,
+                    (tmpZ - spherePosition.z) / 20 * 80 + 128,
                     5, 0, Math.PI * 2, false
                 );
                 this.ctx.fill();
+                this.ctx.globalAlpha = 1;
             }
         }
 
@@ -274,4 +283,8 @@ var AnotherCanvas = function() {
         this.material.map.needsUpdate = true;
         return this.material;
     }
+}
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
 }
