@@ -3,13 +3,17 @@ var Area = function() {
     this.lowerLeftWalls = loadmodel('lowerleft', 'lowerleft', true);
     this.mountain = loadmodel('mountain', 'mountain', true);
     this.users = {};
+    this.teleport = new Teleport(new THREE.Vector3(-2, 0, -8), new THREE.Vector3(-1000, 50, 0));
     this.move = function() {
         if(this.lowerLeftWalls.isLoaded) {
             //this.lowerLeftWalls.object.position.set(-)
         }
         if(this.mountain.isLoaded) {
             this.mountain.object.position.x = -1000;
+            this.mountain.object.scale.set(70, 70, 70);
         }
+
+        this.teleport.move();
 
         for(var key in this.users) {
             if(this.users[key].previousTime < 0) {
@@ -20,7 +24,7 @@ var Area = function() {
                 delete this.users[key];
             }
         }
-    }
+    };
 };
 
 function makeLowerLeftArea() {

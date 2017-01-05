@@ -47,6 +47,7 @@
     <script src="js/wall.js"></script>
     <script src="js/area.js"></script>
     <script src="js/localSocket.js"></script>
+    <script src="js/teleport.js"></script>
 </head>
 <body>
     
@@ -80,6 +81,7 @@
         var camera;
         var materialCaches = {};
         var area;
+        var sphere;
         (function() {
             "use strict";
             var renderer = new THREE.WebGLRenderer({antialias: false});
@@ -123,7 +125,7 @@
                 //sphere.position.z = -1;
                 scene.add(sphere);
             });*/
-            var sphere = new MySphere(loadmodel("sphere2", "sphere2"));
+            sphere = new MySphere(loadmodel("sphere2", "sphere2"));
             //loadSphere();
             //sphere = new 
             //var wall = new Wall(new THREE.Vector3(0, 0, -3), new THREE.Vector3(0.3, 0.3, 0.3));

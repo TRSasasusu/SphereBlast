@@ -198,8 +198,8 @@ var OtherSphere = function(modelResult) {
             return;
         }
         this.modelResult.object.position = position;
-    }
-}
+    };
+};
 
 var AnotherCanvas = function() {
     this.textureCanvas = document.createElement('canvas');
