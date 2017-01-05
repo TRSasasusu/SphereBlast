@@ -82,6 +82,7 @@
         var materialCaches = {};
         var area;
         var sphere;
+        var audio;
         (function() {
             "use strict";
             var renderer = new THREE.WebGLRenderer({antialias: false});
@@ -170,7 +171,7 @@
                     }, onProgress, onError);
                 });
             }*/
-            var audio = new Audio();
+            audio = new Audio();
             if(audio.canPlayType("audio/mp3") == 'maybe') {
                 //audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
                 audio.src = "sounds/music/yorunotobari.mp3";
