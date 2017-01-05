@@ -80,4 +80,11 @@ function makeLowerLeftArea() {
 function ChangeAudio(audioName) {
     audio.pause();
     audio.currentTime = 0;
+    if(audio.canPlayType("audio/mp3") == 'maybe') {
+        audio.src = "sounds/music/" + audioName + ".mp3";
+    }
+    else {
+        audio.src = "sounds/music/" + audioName + ".ogg";
+    }
+    audio.play();
 }
