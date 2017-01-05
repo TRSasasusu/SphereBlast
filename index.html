@@ -60,12 +60,17 @@
             if(!area.users[id].modelResult.isLoaded) {
                 return;
             }
+            area.users[id].previousTime = Date.now();
             area.users[id].modelResult.object.position.set(position.x, position.y, position.z);
             if(area.users[id].modelResult.object.children[0].name == "mysphere") {
                 area.users[id].modelResult.object.children[0].name = "othersphere";
             }
         });
         socketio.on("disconnect", function(id) {
+            if(!(id in area.users)) {
+                return;
+            }
+
             scene.remove(area.users[id].modelResult.object);
 
             delete area.users[id];

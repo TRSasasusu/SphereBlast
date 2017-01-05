@@ -6,6 +6,16 @@ var Area = function() {
         if(this.lowerLeftWalls.isLoaded) {
             //this.lowerLeftWalls.object.position.set(-)
         }
+
+        for(var key in this.users) {
+            if(this.users[key].previousTime < 0) {
+                continue;
+            }
+            if(Date.now() - this.users[key].previousTime > 1000 * 60) {
+                scene.remove(this.users[key].modelResult.object);
+                delete this.users[key];
+            }
+        }
     }
 };
 

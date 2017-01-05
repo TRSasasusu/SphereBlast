@@ -192,6 +192,7 @@ function up(object) {
 
 var OtherSphere = function(modelResult) {
     this.modelResult = modelResult;
+    this.previousTime = -1.0;
     this.beMoved = function(position) {
         if(!this.modelResult.isLoaded) {
             return;
