@@ -1,10 +1,14 @@
 var Area = function() {
     //this.lowerLeftWalls = makeLowerLeftArea();
     this.lowerLeftWalls = loadmodel('lowerleft', 'lowerleft', true);
+    this.mountain = loadmodel('mountain', 'mountain', true);
     this.users = {};
     this.move = function() {
         if(this.lowerLeftWalls.isLoaded) {
             //this.lowerLeftWalls.object.position.set(-)
+        }
+        if(this.mountain.isLoaded) {
+            this.mountain.object.position.x = -1000;
         }
 
         for(var key in this.users) {

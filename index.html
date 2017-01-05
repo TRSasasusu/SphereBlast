@@ -170,10 +170,11 @@
             }*/
             var audio = new Audio();
             if(audio.canPlayType("audio/mp3") == 'maybe') {
-                audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
+                //audio.src = "sounds/music/FutureWorld_Dark_Loop_02.mp3";
+                audio.src = "sounds/music/yorunotobari.mp3";
             }
             else {
-                audio.src = "sounds/music/FutureWorld_Dark_Loop_02.ogg";
+                audio.src = "sounds/music/yorunotobari.ogg";
             }
             audio.loop = true;
             var isAudioStarted = false;
@@ -200,6 +201,7 @@
                     sphere.rotation.y += deltatime * 0.00005;
                 }*/
                 sphere.move();
+                area.move();
 
                 controls.update();
                 
