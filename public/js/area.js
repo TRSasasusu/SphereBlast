@@ -6,8 +6,10 @@ var Area = function() {
     this.users = {};
     this.teleport = new Teleport(new THREE.Vector3(-2, 0, -8), new THREE.Vector3(-1000, 50, 0));
     this.whichArea = WhichArea.MAZE;
-    this.skies = {};
-    this.skyNow;
+    this.mountainSky = makeSky('milkyway', new THREE.Vector3(-1000, 0, 0));
+    this.castleSky = makeSky('castle', new THREE.Vector3(1000, 0, 0));
+    //this.skies = {};
+    //this.skyNow;
     this.move = function() {
         if(this.lowerLeftWalls.isLoaded) {
             //this.lowerLeftWalls.object.position.set(-)
@@ -26,22 +28,22 @@ var Area = function() {
             if(sphere.modelResult.object.position.x < -500) {
                 if(this.whichArea != WhichArea.MOUNTAIN) {
                     this.whichArea = WhichArea.MOUNTAIN;
-                    ChangeAudio('Nostalgia');
-                    this.changeSky('milkyway');
+                    changeAudio('Nostalgia');
+                    //this.changeSky('milkyway');
                 }
             }
             else if(sphere.modelResult.object.position.x > 500) {
                 if(this.whichArea != WhichArea.CASTLE) {
                     this.whichArea = WhichArea.CASTLE;
-                    ChangeAudio('mataonajiyuugure');
-                    this.changeSky('castle');
+                    changeAudio('mataonajiyuugure');
+                    //this.changeSky('castle');
                 }
             }
             else {
                 if(this.whichArea != WhichArea.MAZE) {
                     this.whichArea = WhichArea.MAZE;
-                    ChangeAudio('yorunotobari');
-                    this.disableSky();
+                    changeAudio('yorunotobari');
+                    //this.disableSky();
                 }
             }
         }
@@ -56,7 +58,7 @@ var Area = function() {
             }
         }
     };
-    this.changeSky = function(skyName) {
+    /*this.changeSky = function(skyName) {
         this.disableSky();
 
         if(!(skyName in this.skies)) {
@@ -85,7 +87,7 @@ var Area = function() {
             this.skyNow.visible = false;
             this.skyNow = null;
         }
-    }
+    }*/
 };
 
 var WhichArea = {
@@ -110,7 +112,7 @@ function makeLowerLeftArea() {
     return walls;
 }
 
-function ChangeAudio(audioName) {
+function changeAudio(audioName) {
     audio.pause();
     audio.currentTime = 0;
     if(audio.canPlayType("audio/mp3") == 'maybe') {
@@ -122,6 +124,23 @@ function ChangeAudio(audioName) {
     audio.play();
 }
 
-function ChangeSky(skyName) {
-    
+function makeSky(skyName, position) {
+    var loader = new THREE.TextureLoader();
+    var materials = [];
+    var skyDirections = ['px', 'nx', 'py', 'ny', 'pz', 'nz'];
+    for(var i = 0; i < 6; ++i) {
+        materials.push(new THREE.MeshBasicMaterial({
+            map: loader.load('/img/sky/' + skyName + '/' + skyDirections[i] + '.jpg'),
+            side: THREE.BackSide
+        }));
+    }
+    var material = new THREE.MeshFaceMaterial(materials);
+    //var skyBox = new THREE.Mesh( new THREE.CubeGeometry( 1, 1, 1 ), new THREE.MultiMaterial( materials ) );
+    //skyBox.applyMatrix( new THREE.Matrix4().makeScale( 1, 1, - 1 ) );
+    var skyBox = new THREE.Mesh( new THREE.CubeGeometry( 1000, 1000, 1000 ), material);
+    scene.add(skyBox);
+
+    skyBox.position.copy(position);
+
+    return skyBox;
 }
