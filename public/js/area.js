@@ -6,6 +6,8 @@ var Area = function() {
     this.users = {};
     this.teleport = new Teleport(new THREE.Vector3(-2, 0, -8), new THREE.Vector3(-1000, 50, 0));
     this.whichArea = WhichArea.MAZE;
+    this.skies = {};
+    this.skyNow;
     this.move = function() {
         if(this.lowerLeftWalls.isLoaded) {
             //this.lowerLeftWalls.object.position.set(-)
@@ -25,20 +27,21 @@ var Area = function() {
                 if(this.whichArea != WhichArea.MOUNTAIN) {
                     this.whichArea = WhichArea.MOUNTAIN;
                     ChangeAudio('Nostalgia');
+                    this.changeSky('milkyway');
                 }
             }
             else if(sphere.modelResult.object.position.x > 500) {
-                this.whichArea = WhichArea.CASTLE;
                 if(this.whichArea != WhichArea.CASTLE) {
                     this.whichArea = WhichArea.CASTLE;
                     ChangeAudio('mataonajiyuugure');
+                    this.changeSky('castle');
                 }
             }
             else {
-                this.whichArea = WhichArea.MAZE;
                 if(this.whichArea != WhichArea.MAZE) {
                     this.whichArea = WhichArea.MAZE;
                     ChangeAudio('yorunotobari');
+                    this.disableSky();
                 }
             }
         }
@@ -53,6 +56,36 @@ var Area = function() {
             }
         }
     };
+    this.changeSky = function(skyName) {
+        this.disableSky();
+
+        if(!(skyName in this.skies)) {
+            var loader = new THREE.TextureLoader();
+            var materials = [];
+            var skyDirections = ['px', 'nx', 'py', 'ny', 'pz', 'nz'];
+            for(var i = 0; i < 6; ++i) {
+                materials.push(new THREE.MeshBasicMaterial({
+                    map: loader.load('/img/sky/' + skyName + '/' + skyDirections[i] + '.jpg'),
+                    side: THREE.BackSide
+                }));
+            }
+
+            //var skyBox = new THREE.Mesh( new THREE.CubeGeometry( 1, 1, 1 ), new THREE.MultiMaterial( materials ) );
+			//skyBox.applyMatrix( new THREE.Matrix4().makeScale( 1, 1, - 1 ) );
+            var skyBox = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000 ), new THREE.MultiMaterial( materials ) );
+			scene.add(skyBox);
+            this.skies[skyName] = skyBox;
+        }
+
+        this.skyNow = this.skies[skyName];
+        this.skyNow.visible = true;
+    }
+    this.disableSky = function() {
+        if(this.skyNow != null) {
+            this.skyNow.visible = false;
+            this.skyNow = null;
+        }
+    }
 };
 
 var WhichArea = {
@@ -87,4 +120,8 @@ function ChangeAudio(audioName) {
         audio.src = "sounds/music/" + audioName + ".ogg";
     }
     audio.play();
+}
+
+function ChangeSky(skyName) {
+    
 }
