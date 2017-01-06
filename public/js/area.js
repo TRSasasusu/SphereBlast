@@ -10,7 +10,8 @@ var Area = function() {
     this.castleSky = makeSky('castle', new THREE.Vector3(1000, 0, 0));
     this.teleports = [new Teleport(new THREE.Vector3(-2, 0, -8), new THREE.Vector3(-900, 50, 0), WhichArea.MAZE, 1, false),
                       new Teleport(new THREE.Vector3(-930, 20, 0), new THREE.Vector3(-6, 0, -8), WhichArea.MOUNTAIN, 60, true),
-                      new Teleport(new THREE.Vector3(6, 4, -2), new THREE.Vector3(900, 50, 0), WhichArea.MAZE, 1, false)];
+                      new Teleport(new THREE.Vector3(6, 4, -2), new THREE.Vector3(975, 50, 0), WhichArea.MAZE, 1, false),
+                      new Teleport(new THREE.Vector3(1000, -20, 0), new THREE.Vector3(-8, 4, -8), WhichArea.CASTLE, 140, true)];
     //this.skies = {};
     //this.skyNow;
     this.move = function() {

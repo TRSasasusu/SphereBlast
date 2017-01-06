@@ -14,7 +14,7 @@ var Teleport = function(position, targetPosition, whichAreaThisIsIn, scaleScalar
         if(!sphere.modelResult.isLoaded || whichAreaThisIsIn != area.whichArea) {
             return;
         }
-        if(!isAreaTeleport && this.object.position.distanceTo(sphere.modelResult.object.position) < 0.5) {
+        if(!isAreaTeleport && this.object.position.distanceTo(sphere.modelResult.object.position) < 0.6) {
             sphere.modelResult.object.position.set(this.targetPosition.x, this.targetPosition.y, this.targetPosition.z);
         }
         if(isAreaTeleport && Math.pow(sphere.modelResult.object.position.x - this.object.position.x, 2) + Math.pow(sphere.modelResult.object.position.z - this.object.position.z, 2) > scaleScalar * 0.6 * scaleScalar) {
