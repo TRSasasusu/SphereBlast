@@ -2,12 +2,15 @@ var Area = function() {
     //this.lowerLeftWalls = makeLowerLeftArea();
     this.lowerLeftWalls = loadmodel('lowerleft', 'lowerleft', true);
     this.mountain = loadmodel('mountain', 'mountain', true);
-    this.castle = loadmodel('castle', 'castle', true);
+    this.castle = loadmodel('castle_2', 'castle_2', true);
+    this.castleGround = loadmodel('ground_castle', 'ground_castle', true);
     this.users = {};
-    this.teleport = new Teleport(new THREE.Vector3(-2, 0, -8), new THREE.Vector3(-1000, 50, 0));
     this.whichArea = WhichArea.MAZE;
     this.mountainSky = makeSky('milkyway', new THREE.Vector3(-1000, 0, 0));
     this.castleSky = makeSky('castle', new THREE.Vector3(1000, 0, 0));
+    this.teleports = [new Teleport(new THREE.Vector3(-2, 0, -8), new THREE.Vector3(-900, 50, 0), WhichArea.MAZE, 1, false),
+                      new Teleport(new THREE.Vector3(-930, 20, 0), new THREE.Vector3(-6, 0, -8), WhichArea.MOUNTAIN, 60, true),
+                      new Teleport(new THREE.Vector3(6, 4, -2), new THREE.Vector3(900, 50, 0), WhichArea.MAZE, 1, false)];
     //this.skies = {};
     //this.skyNow;
     this.move = function() {
@@ -20,10 +23,30 @@ var Area = function() {
         }
         if(this.castle.isLoaded) {
             this.castle.object.position.x = 1000;
-            this.castle.object.scale.set(70, 70, 70);
+            this.castle.object.scale.set(5, 5, 5);
+        }
+        if(this.castleGround.isLoaded) {
+            this.castleGround.object.position.x = 1000;
+            this.castleGround.object.position.y = -40;
+            this.castleGround.object.scale.set(80, 80, 80);
         }
 
-        this.teleport.move();
+        for(var i = 0; i < this.teleports.length; ++i) {
+            this.teleports[i].move();
+        }
+        this.checkAndModifyArea();
+
+        for(var key in this.users) {
+            if(this.users[key].previousTime < 0) {
+                continue;
+            }
+            if(Date.now() - this.users[key].previousTime > 1000 * 60) {
+                scene.remove(this.users[key].modelResult.object);
+                delete this.users[key];
+            }
+        }
+    };
+    this.checkAndModifyArea = function() {
         if(sphere.modelResult.isLoaded) {
             if(sphere.modelResult.object.position.x < -500) {
                 if(this.whichArea != WhichArea.MOUNTAIN) {
@@ -45,16 +68,6 @@ var Area = function() {
                     changeAudio('yorunotobari');
                     //this.disableSky();
                 }
-            }
-        }
-
-        for(var key in this.users) {
-            if(this.users[key].previousTime < 0) {
-                continue;
-            }
-            if(Date.now() - this.users[key].previousTime > 1000 * 60) {
-                scene.remove(this.users[key].modelResult.object);
-                delete this.users[key];
             }
         }
     };

@@ -1,24 +1,30 @@
-var Teleport = function(position, targetPosition) {
+var Teleport = function(position, targetPosition, whichAreaThisIsIn, scaleScalar, isAreaTeleport) {
     this.object = new THREE.Object3D();
-    makeTeleport(this.object);
+    makeTeleport(this.object, isAreaTeleport);
     this.object.position.set(position.x, position.y, position.z);
+    this.object.scale.set(scaleScalar, scaleScalar, scaleScalar);
     this.targetPosition = targetPosition;
+    this.isAreaTeleport = isAreaTeleport;
     this.move = function() {
         //materialCaches['teleport_bottom'].map.offset.x += 0.01 * deltatime;
         //materialCaches['teleport_bottom'].map.offset.y += 0.01 * deltatime;
         this.object.rotation.y += 0.005 * deltatime;
 
-        if(!sphere.modelResult.isLoaded) {
+        area.checkAndModifyArea();
+        if(!sphere.modelResult.isLoaded || whichAreaThisIsIn != area.whichArea) {
             return;
         }
-        if(this.object.position.distanceTo(sphere.modelResult.object.position) < 0.5) {
+        if(!isAreaTeleport && this.object.position.distanceTo(sphere.modelResult.object.position) < 0.5) {
+            sphere.modelResult.object.position.set(this.targetPosition.x, this.targetPosition.y, this.targetPosition.z);
+        }
+        if(isAreaTeleport && Math.pow(sphere.modelResult.object.position.x - this.object.position.x, 2) + Math.pow(sphere.modelResult.object.position.z - this.object.position.z, 2) > scaleScalar * 0.6 * scaleScalar) {
             sphere.modelResult.object.position.set(this.targetPosition.x, this.targetPosition.y, this.targetPosition.z);
         }
     };
     
 };
 
-function makeTeleport(object) {
+function makeTeleport(object, isAreaTeleport) {
     if(!('teleport_bottom' in materialCaches)) {
         var loader = new THREE.TextureLoader();
         var textureBottom = loader.load('img/teleport_bottom.png');
@@ -29,9 +35,12 @@ function makeTeleport(object) {
             //depthWrite: false
         });
         materialCaches['teleport_bottom'].map.wrapS = materialCaches['teleport_bottom'].map.wrapT = THREE.RepeatWrapping;
-
-        var textureCylinder = loader.load('img/teleport_cylinder.png');
-        materialCaches['teleport_cylinder'] = new THREE.MeshBasicMaterial({
+    }
+    var suffix = isAreaTeleport ? '_area' : '';
+    if(!(('teleport_cylinder' + suffix) in materialCaches)) {
+        var loader = new THREE.TextureLoader();
+        var textureCylinder = loader.load('img/teleport_cylinder' + suffix + '.png');
+        materialCaches['teleport_cylinder' + suffix] = new THREE.MeshBasicMaterial({
             map: textureCylinder,
             color: 0x9999ff,
             blending: THREE.AdditiveBlending,
@@ -46,7 +55,7 @@ function makeTeleport(object) {
     bottom.position.y = -0.99;
 
     var cylinderGeo = new THREE.CylinderGeometry(0.8, 0.9, 2, 40, 40, true);
-    var cylinder = new THREE.Mesh(cylinderGeo, materialCaches['teleport_cylinder']);
+    var cylinder = new THREE.Mesh(cylinderGeo, materialCaches['teleport_cylinder' + suffix]);
 
     bottom.renderOrder = -2;
     scene.add(bottom);
