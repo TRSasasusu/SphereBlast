@@ -47,6 +47,7 @@
     <script src="js/wall.js"></script>
     <script src="js/area.js"></script>
     <script src="js/bird.js"></script>
+    <script src="js/star.js"></script>
     <script src="js/localSocket.js"></script>
     <script src="js/teleport.js"></script>
 </head>
@@ -79,6 +80,11 @@
         });
         socketio.on("castleBirdMove", function(position, rotationX, rotationY, rotationZ, isFlying) {
             area.castleBird.move(position, rotationX, rotationY, rotationZ, isFlying);
+        });
+        socketio.on("starsMove", function(positions) {
+            for(var i = 0; i < positions.length; ++i) {
+                area.stars[i].move(positions[i]);
+            }
         });
         var deltatime = 0;
         var scene;

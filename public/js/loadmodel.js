@@ -1,4 +1,4 @@
-function loadmodel(obj, mtl, isThereNormal) {
+function loadmodel(obj, mtl, isThereNormal, isNotThereTexture) {
     if(isThereNormal === undefined) {
         isThereNormal = false;
     }
@@ -13,18 +13,25 @@ function loadmodel(obj, mtl, isThereNormal) {
     var mtlLoader = new THREE.MTLLoader();
     var result = new ModelResult();
 
-    var texture = new THREE.TextureLoader().load('models/' + mtl + '_colored.png');
     if(!(mtl in materialCaches)) {
-        if(mtl == 'sphere2') {
-            materialCaches[mtl] = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, side: THREE.BackSide, map: texture});
+        if(isNotThereTexture) {
+            if(mtl == 'star') {
+                materialCaches[mtl] = new THREE.MeshBasicMaterial({color: 0xffff55});
+            }
         }
         else {
-            if(isThereNormal) {
-                var normalTexture = new THREE.TextureLoader().load('models/' + mtl + '_normal.png');
-                materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture, normalMap: normalTexture});
+            var texture = new THREE.TextureLoader().load('models/' + mtl + '_colored.png');
+            if(mtl == 'sphere2') {
+                materialCaches[mtl] = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, side: THREE.BackSide, map: texture});
             }
             else {
-                materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture});
+                if(isThereNormal) {
+                    var normalTexture = new THREE.TextureLoader().load('models/' + mtl + '_normal.png');
+                    materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture, normalMap: normalTexture});
+                }
+                else {
+                    materialCaches[mtl] = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture});
+                }
             }
         }
     }
