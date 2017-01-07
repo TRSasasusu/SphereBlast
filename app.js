@@ -29,7 +29,7 @@ var starPositions = [
 ];
 var usedStarPositions = [0, 1, 2];
 var Star = function(positionId) {
-    this.position = starPositions[positionId];
+    this.position = starPositions[positionId].clone();
     this.id = -1;
     this.previousId = -1;
 };
@@ -91,9 +91,9 @@ io.on("connection", function(socket) {
         io.to(socket.id).emit("castleBirdMove", castleBirdPositionNow, castleBirdRotation[0], castleBirdRotation[1], castleBirdRotation[2], isFlying);
         //io.emit("castleBirdMove", castleBirdPositionNow, castleBirdRotation[0], castleBirdRotation[1], castleBirdRotation[2], isFlying);
 
-        var starPositions = [];
+        var starTmpPositions = [];
         for(var i = 0; i < stars.length; ++i) {
-            starPositions.push(stars[i].position);
+            starTmpPositions.push(stars[i].position);
             if(stars[i].id == socket.id) {
                 if(position.x > -500) {
                     starReset(i);
@@ -123,11 +123,11 @@ io.on("connection", function(socket) {
                 stars[i].previousId = stars[i].id;
                 stars[i].id = socket.id;
                 stars[i].position = localStarPosition.clone().add(position);
-                starPositions[i].copy(stars[i].position);
+                starTmpPositions[i].copy(stars[i].position);
                 usedStarPositions[i] = -1;
             }
         }
-        io.to(socket.id).emit("starsMove", starPositions);
+        io.to(socket.id).emit("starsMove", starTmpPositions);
         //io.emit("starsMove", starPositions);
         //console.log("published by " + socket.id);
         //console.log("position: " + position.x + "," + position.y + "," + position.z);
@@ -151,7 +151,7 @@ function starReset(index) {
     do {   
         nextId = Math.floor(Math.random() * starPositions.length);
     } while(isHavingTheNumber(usedStarPositions, nextId));
-    stars[index].position = starPositions[nextId];
+    stars[index].position.copy(starPositions[nextId]);
     usedStarPositions[index] = nextId;
 }
 
