@@ -46,6 +46,7 @@
     <script src="js/sphere.js"></script>
     <script src="js/wall.js"></script>
     <script src="js/area.js"></script>
+    <script src="js/bird.js"></script>
     <script src="js/localSocket.js"></script>
     <script src="js/teleport.js"></script>
 </head>
@@ -76,8 +77,8 @@
 
             delete area.users[id];
         });
-        socketio.on("castleBirdMove", function(from, to) {
-
+        socketio.on("castleBirdMove", function(position, rotationX, rotationY, rotationZ, isFlying) {
+            area.castleBird.move(position, rotationX, rotationY, rotationZ, isFlying);
         });
         var deltatime = 0;
         var scene;

@@ -14,6 +14,8 @@ var Area = function() {
                       new Teleport(new THREE.Vector3(1000, -20, 0), new THREE.Vector3(-8, 4, -8), WhichArea.CASTLE, 140, true)];
     //this.skies = {};
     //this.skyNow;
+    this.castleBird = new CastleBird();
+
     this.move = function() {
         if(this.lowerLeftWalls.isLoaded) {
             //this.lowerLeftWalls.object.position.set(-)
