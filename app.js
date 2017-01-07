@@ -88,7 +88,8 @@ io.on("connection", function(socket) {
             castleBirdRotation[1] = castleBirdDummy.rotation.y;
             castleBirdRotation[2] = castleBirdDummy.rotation.z;
         }
-        io.emit("castleBirdMove", castleBirdPositionNow, castleBirdRotation[0], castleBirdRotation[1], castleBirdRotation[2], isFlying);
+        io.to(socket.id).emit("castleBirdMove", castleBirdPositionNow, castleBirdRotation[0], castleBirdRotation[1], castleBirdRotation[2], isFlying);
+        //io.emit("castleBirdMove", castleBirdPositionNow, castleBirdRotation[0], castleBirdRotation[1], castleBirdRotation[2], isFlying);
 
         var starPositions = [];
         for(var i = 0; i < stars.length; ++i) {
@@ -126,7 +127,8 @@ io.on("connection", function(socket) {
                 usedStarPositions[i] = -1;
             }
         }
-        io.emit("starsMove", starPositions);
+        io.to(socket.id).emit("starsMove", starPositions);
+        //io.emit("starsMove", starPositions);
         //console.log("published by " + socket.id);
         //console.log("position: " + position.x + "," + position.y + "," + position.z);
         socket.broadcast.emit("publish", socket.id, position);
