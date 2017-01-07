@@ -1,9 +1,9 @@
-var Teleport = function(position, targetPosition, whichAreaThisIsIn, scaleScalar, isAreaTeleport) {
+var Teleport = function(position, targetPositions, whichAreaThisIsIn, scaleScalar, isAreaTeleport) {
     this.object = new THREE.Object3D();
     makeTeleport(this.object, isAreaTeleport);
     this.object.position.set(position.x, position.y, position.z);
     this.object.scale.set(scaleScalar, scaleScalar, scaleScalar);
-    this.targetPosition = targetPosition;
+    this.targetPositions = targetPositions;
     this.isAreaTeleport = isAreaTeleport;
     this.move = function() {
         //materialCaches['teleport_bottom'].map.offset.x += 0.01 * deltatime;
@@ -15,10 +15,11 @@ var Teleport = function(position, targetPosition, whichAreaThisIsIn, scaleScalar
             return;
         }
         if(!isAreaTeleport && this.object.position.distanceTo(sphere.modelResult.object.position) < 0.6) {
-            sphere.modelResult.object.position.set(this.targetPosition.x, this.targetPosition.y, this.targetPosition.z);
+            var tmpIndex = Math.floor(Math.random() * this.targetPositions.length);
+            sphere.modelResult.object.position.set(this.targetPositions[tmpIndex].x, this.targetPositions[tmpIndex].y, this.targetPositions[tmpIndex].z);
         }
         if(isAreaTeleport && Math.pow(sphere.modelResult.object.position.x - this.object.position.x, 2) + Math.pow(sphere.modelResult.object.position.z - this.object.position.z, 2) > scaleScalar * 0.6 * scaleScalar) {
-            sphere.modelResult.object.position.set(this.targetPosition.x, this.targetPosition.y, this.targetPosition.z);
+            sphere.modelResult.object.position.set(this.targetPositions[0].x, this.targetPositions[0].y, this.targetPositions[0].z);
         }
     };
     
