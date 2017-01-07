@@ -76,6 +76,9 @@
 
             delete area.users[id];
         });
+        socketio.on("castleBirdMove", function(from, to) {
+
+        });
         var deltatime = 0;
         var scene;
         var camera;
