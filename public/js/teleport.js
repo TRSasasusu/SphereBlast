@@ -14,7 +14,7 @@ var Teleport = function(position, targetPositions, whichAreaThisIsIn, scaleScala
         if(!sphere.modelResult.isLoaded || whichAreaThisIsIn != area.whichArea) {
             return;
         }
-        if(!isAreaTeleport && this.object.position.distanceTo(sphere.modelResult.object.position) < 0.6) {
+        if(!isAreaTeleport && this.object.position.distanceTo(sphere.modelResult.object.position) < 0.7) {
             var tmpIndex = Math.floor(Math.random() * this.targetPositions.length);
             sphere.modelResult.object.position.set(this.targetPositions[tmpIndex].x, this.targetPositions[tmpIndex].y, this.targetPositions[tmpIndex].z);
         }
